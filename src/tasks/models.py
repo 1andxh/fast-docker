@@ -1,6 +1,6 @@
 from ..db import Base
 from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, Boolean
 
 
 class Task(Base):
@@ -10,3 +10,6 @@ class Task(Base):
         Integer, primary_key=True, index=True, autoincrement=True
     )
     title: Mapped[str] = mapped_column(String, nullable=False)
+    completed: Mapped[bool] = mapped_column(
+        Boolean, default=False, server_default="false", nullable=False
+    )
