@@ -1,0 +1,22 @@
+# Git
+
+.git
+.gitignore
+
+# Python
+
+**pycache**/
+_.py[cod]
+_$py.class
+.pytest_cache/
+.mypy_cache/
+
+# UV and Virtual Environments
+
+.venv/
+.uv/
+
+# Local Environment / Secrets
+
+.env
+.venv
