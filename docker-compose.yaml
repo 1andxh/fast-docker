@@ -1,0 +1,19 @@
+services:
+  api:
+    build: .
+    container_name: fast_docker
+    restart: unless_stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: ${DATABSE_URL}
+      REDIS_URL: ${REDIS_URL}
+
+  db:
+
+  redis:
