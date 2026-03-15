@@ -3,11 +3,10 @@ name = "fast-docker"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.18.4",
     "fastapi[standard]>=0.135.1",
-    "psycopg2>=2.9.11",
-    "psycopg2-binary>=2.9.11",
+    "psycopg[binary]>=3.3.3",
     "redis>=7.3.0",
 ]

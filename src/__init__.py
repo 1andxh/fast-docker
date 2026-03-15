@@ -1,8 +1,6 @@
 from fastapi import FastAPI
+from .tasks.routes import router
 
 app = FastAPI()
 
-
-@app.get("/")
-def root():
-    return {"message": "it's up..."}
+app.include_router(router)

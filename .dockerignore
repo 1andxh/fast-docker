@@ -10,6 +10,8 @@ _.py[cod]
 _$py.class
 .pytest_cache/
 .mypy_cache/
+*.pyv
+
 
 # UV and Virtual Environments
 
