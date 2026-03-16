@@ -8,6 +8,7 @@ class TaskCreate(BaseModel):
 class TaskRead(BaseModel):
     id: int
     title: str
+    completed: bool
 
     class Config:
         from_attributes = True
