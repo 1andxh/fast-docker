@@ -12,6 +12,9 @@ def create_task(task: TaskCreate, db: Session) -> Task:
     db.add(new_task)
     db.commit()
     db.refresh(new_task)
+
+    #   invalidat cache on write
+    redis_client.delete("tasks:list")
     return new_task
 
 
