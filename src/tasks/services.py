@@ -25,7 +25,7 @@ def get_tasks(db: Session):
 
     #   check redis
     if cached:
-        return json.loads(cache_key)
+        return json.loads(cached)  # type: ignore
 
     #   cachec miss? hit db
     stmt = db.execute(select(Task))
@@ -33,9 +33,10 @@ def get_tasks(db: Session):
     tasks = list(result)
 
     # save to redis for next hit
-    tasks_data = [
-        {"id": t.id, "title": t.title, "completed": t.completed} for t in tasks
-    ]
+    tasks_data = []
+    for t in tasks:
+        task_dict = {"id": t.id, "title": t.title, "completed": t.completed}
+        tasks_data.append(task_dict)
 
     redis_client.set(cache_key, json.dumps(tasks_data), ex=60)
     return tasks_data
