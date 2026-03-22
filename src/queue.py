@@ -1,5 +1,6 @@
 import json
 from src.redis import redis_client
+from typing import Optional, cast
 
 QUEUE_NAME = "jobs:default"
 
@@ -9,7 +10,8 @@ def enqueue(job: dict):
 
 
 def dequeue():
-    _, job = redis_client.brpop(QUEUE_NAME)
+    result = redis_client.brpop(QUEUE_NAME, timeout=0)
+    _, job = cast(tuple[str, str], result)
     return json.loads(job)
 
 

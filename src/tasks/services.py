@@ -4,7 +4,7 @@ from .schemas import TaskCreate, TaskRead
 from sqlalchemy import select
 import json
 from src.redis import redis_client
-from typing import Sequence
+from typing import cast
 
 
 def create_task(task: TaskCreate, db: Session) -> Task:
@@ -25,7 +25,7 @@ def get_tasks(db: Session):
 
     #   check redis
     if cached:
-        return json.loads(cached)  # type: ignore
+        return json.loads(cast(str, cached))  # nts: casting type instead of ignore
 
     #   cachec miss? hit db
     stmt = db.execute(select(Task))
@@ -40,3 +40,6 @@ def get_tasks(db: Session):
 
     redis_client.set(cache_key, json.dumps(tasks_data), ex=60)
     return tasks_data
+
+
+print(type(redis_client))
