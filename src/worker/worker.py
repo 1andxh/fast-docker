@@ -38,8 +38,10 @@ def worker_loop():
 
             if retries < MAX_RETRIES:
                 job["retries"] = retries + 1
+                delay = 2**retries  # add backooff between retries
 
                 print(f"Retring job...[retry_count: {job["retries"]}/3]")
+                time.sleep(delay)
 
                 enqueue(job)  # queue the job again
             else:
