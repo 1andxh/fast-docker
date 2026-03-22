@@ -1,7 +1,8 @@
 from .dispatcher import handlers
-from ..queue import dequeue, enqueue
+from ..queue import dequeue, enqueue, enqueue_failed
 
 import time
+from datetime import datetime, timezone
 
 MAX_RETRIES = 3
 
@@ -44,8 +45,12 @@ def worker_loop():
                 time.sleep(delay)
 
                 enqueue(job)  # queue the job again
-            else:
+            else:  # add job to dlq
                 print(print("Max retries reached. Sending to DLQ."))
+                job["error"] = str(e)
+                job["failed_at"] = datetime.now(timezone.utc).isoformat()
+
+                enqueue_failed(job)
 
 
 if __name__ == "__main__":

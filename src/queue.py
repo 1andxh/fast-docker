@@ -3,6 +3,7 @@ from src.redis import redis_client
 from typing import Optional, cast
 
 QUEUE_NAME = "jobs:default"
+FAILED_QUEUE = "jobs:failed"
 
 
 def enqueue(job: dict):
@@ -15,4 +16,6 @@ def dequeue():
     return json.loads(job)
 
 
-# async?
+# dlq
+def enqueue_failed(job: dict):
+    redis_client.lpush(FAILED_QUEUE, json.dumps(job))
