@@ -36,5 +36,12 @@ services:
     # ports:
     #   - "6379:6379"
 
+  worker:
+    build: .
+    command: uv run python -m src.worker
+    depends_on:
+      - redis
+      - postgres
+
 volumes:
   postgres_data:
