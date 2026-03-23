@@ -31,10 +31,12 @@ def worker_loop():
 
         try:  # try to execute job
             job_id = job["id"]
-            key = f"job:{job_id}:processed"
-            if not redis_client.setnx(key, "1"):
-                print("Duplicate job detected, skipping")
+            key = f"job:{job_id}:completed"  # makr job as done
+
+            if not redis_client.setnx(key, "1"):  # set key if not exists
+                print(f"Job {job_id} already fininshed, skipping")
                 continue
+
             redis_client.expire(key, 3600)
 
             process_job(job)
@@ -43,16 +45,21 @@ def worker_loop():
         except Exception as e:  # worker handles failures
             print(f"Job failed: {e}")
 
+            redis_client.delete(
+                key
+            )  # delete key once job fails so setnx doesn't skip job on retry
+
             retries = job.get("retries", 0)
 
             if retries < MAX_RETRIES:
                 job["retries"] = retries + 1
                 delay = 2**retries  # add backooff between retries
 
-                print(f"Retring job...[retry_count: {job["retries"]}/3]")
+                print(f"Retring job...[retry_count: {job['retries']}/3]")
                 time.sleep(delay)
 
                 enqueue(job)  # queue the job again
+
             else:  # add job to dlq
                 print(print("Max retries reached. Sending to DLQ."))
                 job["error"] = str(e)
@@ -63,3 +70,6 @@ def worker_loop():
 
 if __name__ == "__main__":
     worker_loop()
+
+
+# what if i check the db for completed jobs?
