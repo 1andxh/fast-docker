@@ -38,10 +38,15 @@ services:
 
   worker:
     build: .
+    container_name: fast_worker
+    restart: unless-stopped
     command: uv run python -m src.worker
     depends_on:
       - redis
       - postgres
+    volumes:
+      - .:/app
+      - /app/.venv
 
 volumes:
   postgres_data:
