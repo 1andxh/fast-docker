@@ -21,7 +21,7 @@ def process_job(job):
     handler(payload)
 
 
-def worker_loop():
+def main():
     print("Worker started...")
 
     while True:
@@ -69,7 +69,7 @@ def worker_loop():
 
 
 if __name__ == "__main__":
-    worker_loop()
+    main()
 
 
 # what if i check the db for completed jobs?
