@@ -1,9 +1,9 @@
-from .dispatcher import handlers
-from ..queue import dequeue, enqueue, enqueue_failed
+from worker.dispatcher import handlers
+from src.queue import dequeue, enqueue, enqueue_failed
 
 import time
 from datetime import datetime, timezone
-from ..redis import redis_client
+from src.redis import redis_client
 
 MAX_RETRIES = 3
 
