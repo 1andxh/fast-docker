@@ -1,9 +1,17 @@
 import json
+import uuid
 from src.redis import redis_client
 from typing import Optional, cast
 
 QUEUE_NAME = "jobs:default"
 FAILED_QUEUE = "jobs:failed"
+
+job = {
+    "id": str(uuid.uuid4()),
+    "type": "task_created",
+    "payload": {},
+    "retries": 0,
+}
 
 
 def enqueue(job: dict):

@@ -3,6 +3,7 @@ from ..queue import dequeue, enqueue, enqueue_failed
 
 import time
 from datetime import datetime, timezone
+from ..redis import redis_client
 
 MAX_RETRIES = 3
 
@@ -29,6 +30,13 @@ def worker_loop():
             continue
 
         try:  # try to execute job
+            job_id = job["id"]
+            key = f"job:{job_id}:processed"
+            if not redis_client.setnx(key, "1"):
+                print("Duplicate job detected, skipping")
+                continue
+            redis_client.expire(key, 3600)
+
             process_job(job)
             print(f"Successfully finished job {job["id"]}")
 
