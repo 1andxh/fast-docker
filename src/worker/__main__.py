@@ -1,4 +1,4 @@
-from worker.dispatcher import handlers
+from src.worker.dispatcher import handlers
 from src.queue import dequeue, enqueue, enqueue_failed
 
 import time
