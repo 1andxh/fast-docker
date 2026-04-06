@@ -46,7 +46,7 @@ def get_tasks(db: Session) -> list[dict[str, Any]]:
     cached = redis_client.get(CACHE_KEY)
 
     if cached:
-        cached_tasks: list[dict[str, Any]] = json.loads(cached)
+        cached_tasks: list[dict[str, Any]] = json.loads(cached)  # type: ignore
         return cached_tasks
 
     stmt = db.execute(select(Task))
